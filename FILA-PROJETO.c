@@ -10,6 +10,16 @@ struct FILA {
 struct FILA *inicio;
 struct FILA *fim;
 
+void filaVazia (void);
+char menuOpcoes (void);
+void admin (char tecla);
+int adicionaFila (void);
+int consultaFila (void);
+int removeFila (void);
+int pesquisa (int valor);
+int removeFilaPorElemento (void);
+
+
 void filaVazia (void){
 	struct FILA *aux;
 	aux = (struct FILA*) malloc (sizeof(struct FILA));
@@ -17,7 +27,7 @@ void filaVazia (void){
 	fim = inicio;
 }
 
-char menuOpcoes (valor)
+char menuOpcoes (void)
 {
 	char opcao;
 	system("cls");
@@ -58,7 +68,7 @@ void admin (char tecla)
 	}
 }
 
-int adicionaFila (){
+int adicionaFila (void){
 	struct FILA *aux;
 	aux = (struct FILA*) malloc (sizeof(struct FILA));
 	int opc, valor;
@@ -89,19 +99,14 @@ int consultaFila (void){
 	getch();
 }
 
-int removeFila (){
+int removeFila (void){
 	struct FILA *aux;
 	aux = inicio->proximo;
 	printf("\n -----------REMOVENDO NORMALMENTE-----------");
-	
+		
 	inicio->proximo = inicio->proximo->proximo;
 	
-	printf("\n ELEMENTOS NA FILA: ");
-	
-	while(aux != inicio){
-		printf("[%d]", aux->valor);
-		aux = aux->proximo;
-	}
+	printf("\n Elemento [%d] removido ", aux->valor);
 		
 	getch();
 }
@@ -124,7 +129,7 @@ int pesquisa (int valor){
 	getch();
 }
 
-int removeFilaPorElemento (){
+int removeFilaPorElemento (void){
 	struct FILA *aux;
 	struct FILA *sinal;
 	int valor, flag;
