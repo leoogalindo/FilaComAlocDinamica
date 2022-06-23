@@ -41,7 +41,7 @@ char menuOpcoes (void)
     printf("\n Escolha: ");
     fflush(stdin);
     opcao = getche();
-    return opcao; 
+    return opcao;
 }
 
 void admin (char tecla)
@@ -50,20 +50,20 @@ void admin (char tecla)
 	{
 		case '1': adicionaFila();
 		break;
-		
+
 		case '2': removeFila();
 		break;
-		
+
 		case '3': removeFilaPorElemento();
 		break;
-		
+
 		case '4': consultaFila();
 		break;
-		
+
 		case '5': exit(0);
-		
+
 		default: printf("\n Opção inválida!!!!");
-		
+
 		getch();
 	}
 }
@@ -72,42 +72,52 @@ int adicionaFila (void){
 	struct FILA *aux;
 	aux = (struct FILA*) malloc (sizeof(struct FILA));
 	int opc, valor;
-	
+
 	printf("\n Insira o valor a ser adicionado: ");
 	fflush(stdin);
 	scanf("%d", &valor);
-	
+
 	aux->valor = valor;
 	fim->proximo = aux;
 	fim = fim->proximo;
 	aux->proximo = inicio;
-	
+
 	printf("\n Elemento adicionado: [%d]", valor);
-	getch();	
+	getch();
 }
 
 int consultaFila (void){
+	int flag;
 	struct FILA *aux;
 	aux = inicio->proximo;
 	printf("\n ELEMENTOS NA FILA: ");
 	
-	while(aux != inicio){
-		printf("[%d]", aux->valor);
-		aux = aux->proximo;
+	if(aux->valor == 0){
+		printf("Nenhum! Fila está vazia!");
+		flag = 0;
+	} else {
+		flag = 1;
+		while(aux != inicio){
+			printf("[%d]", aux->valor);
+			aux = aux->proximo;
+		}
 	}
 	
 	getch();
+	return flag;
 }
 
 int removeFila (void){
 	struct FILA *aux;
 	aux = inicio->proximo;
 	printf("\n -----------REMOVENDO NORMALMENTE-----------");
-		
-	inicio->proximo = inicio->proximo->proximo;
-	
-	printf("\n Elemento [%d] removido ", aux->valor);
-		
+
+	if(aux->valor == 0){
+		printf("\n Fila vazia!");
+	} else {
+		inicio->proximo = inicio->proximo->proximo;
+		printf("\n Elemento [%d] removido ", aux->valor);
+	}
 	getch();
 }
 
@@ -121,10 +131,9 @@ int pesquisa (int valor){
 			aux = inicio;
 		} else {
 			aux = aux->proximo;
-			
 		}
 	}
-	
+
 	return flag;
 	getch();
 }
@@ -132,34 +141,39 @@ int pesquisa (int valor){
 int removeFilaPorElemento (void){
 	struct FILA *aux;
 	struct FILA *sinal;
-	int valor, flag;
-	
+	int valor, flag, teste;
+
 	aux = inicio->proximo;
 	sinal = inicio;
-	
-	consultaFila();
-	
-	printf("\n Informe o elemento a ser removido: ");
-	fflush(stdin);
-	scanf("%d", &valor);
-	
-	flag = pesquisa(valor);
-	
-	if(flag == 1){
-		while(aux != NULL){
-			if(aux->valor == valor){
-				printf("\n Item removido: %d", valor);
-				sinal->proximo = aux->proximo;
-				aux = NULL;
-				getch();
-			} else {
-				aux = aux->proximo;
-				sinal = sinal->proximo;
-			}
-		}
-	} else {
-		printf("\n Elemento %d não encontrado na Fila", valor);
+
+	teste = consultaFila();
+	if(teste == 0){
 		getch();
+		return;
+	} else {
+		printf("\n Informe o elemento a ser removido: ");
+		fflush(stdin);
+		scanf("%d", &valor);
+
+		flag = pesquisa(valor);
+	
+	
+		if(flag == 1){
+			while(aux != NULL){
+				if(aux->valor == valor){
+					printf("\n Item removido: %d", valor);
+					sinal->proximo = aux->proximo;
+					aux = NULL;
+					getch();
+				} else {
+					aux = aux->proximo;
+					sinal = sinal->proximo;
+				}
+			}
+		} else {
+			printf("\n Elemento %d não encontrado na Fila", valor);
+			getch();
+		}
 	}
 	
 }
@@ -169,10 +183,10 @@ int main (){
 	setlocale(LC_ALL, "");
 	filaVazia();
 	do{
-        opc = menuOpcoes();              
-        admin(opc);              
+        opc = menuOpcoes();
+        admin(opc);
     }while(opc != '5');
-	
-	getch();	
+
+	getch();
 	return 0;
 }
